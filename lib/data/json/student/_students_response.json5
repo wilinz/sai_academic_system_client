@@ -1,0 +1,13 @@
+{
+  "code": 200,
+  "msg": "ok",
+  "data": [
+    {
+      "id": 1,
+      "majors": "fuck人工智能",
+      "grade": 2022,
+      "student_no": "2201630216",
+      "name": ""
+    }
+  ]
+}

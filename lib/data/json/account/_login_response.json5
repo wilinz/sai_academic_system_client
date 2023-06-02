@@ -1,0 +1,13 @@
+{
+  "code": 200,
+  "msg": "ok",
+  "data": {
+    "email": "",
+    "phone": "",
+    "username": "admin",
+    "gender": "",
+    "is_admin": true,
+    "nickname": "",
+    "avatar": ""
+  }
+}

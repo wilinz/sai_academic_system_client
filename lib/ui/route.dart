@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_template/ui/page/admin/admin_home.dart';
 
 import 'page/login/login.dart';
 import 'page/main/main.dart';
@@ -17,6 +18,9 @@ class AppRoute {
 
   static const String mainPage = "mainPage";
 
+  static const String adminHomePage = "adminHomePage";
+  // static const String settingPage = "settingPage";
+
   ///路由表配置
   static Map<String, WidgetBuilder> routes = {
     loginPage: (context) {
@@ -25,6 +29,8 @@ class AppRoute {
       return LoginPage(popUpAfterSuccess: popUpAfterSuccess);
     },
     splashPage: (context) => const SplashPage(),
-    mainPage: (context) => const MainPage(),
+    mainPage: (context) => MainPage(),
+    // settingPage: (context) => SettingsPage(),
+    adminHomePage: (context) => AdminHomePage()
   };
 }

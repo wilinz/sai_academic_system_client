@@ -41,7 +41,7 @@ class _SplashPageState extends State<SplashPage> {
       //   var route = ticket == null ? AppRoute.loginPage : AppRoute.mainPage;
       //
       // });
-      Navigator.pushReplacementNamed(context, AppRoute.mainPage, arguments: false);
+      Navigator.pushReplacementNamed(context, AppRoute.loginPage, arguments: false);
     });
   }
 }

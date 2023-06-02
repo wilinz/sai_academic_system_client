@@ -1,0 +1,16 @@
+{
+  "code": 200,
+  "msg": "ok",
+  "data": [
+    {
+      "id": 1,
+      "course_name": "面向对象编程",
+      "course_no": "2201651561",
+      "credits": 1,
+      "teacher": "孙绍华",
+      "grade": 2022,
+      "room": "人工智能实验室",
+      "limit": 30
+    }
+  ]
+}
