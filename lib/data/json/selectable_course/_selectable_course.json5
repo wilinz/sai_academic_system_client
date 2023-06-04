@@ -1,0 +1,32 @@
+{
+  "code": 200,
+  "msg": "ok",
+  "data": [
+    {
+      "id": 1,
+      "course_name": "工程实训初级",
+      "course_no": "2201651561",
+      "credits": 1.5,
+      "teacher": "孙绍华",
+      "grade": 2022,
+      "room": "电子技术综合实验室",
+      "capacity": 30,
+      "selected": 0,
+      "created_at": -62135596800000,
+      "updated_at": 1685883292000
+    },
+    {
+      "id": 4,
+      "course_name": "面向对象编程",
+      "course_no": "2225156",
+      "credits": 1.5,
+      "teacher": "孙绍华",
+      "grade": 2022,
+      "room": "电子综合技术实验室",
+      "capacity": 30,
+      "selected": 0,
+      "created_at": 1685883510000,
+      "updated_at": 1685883510000
+    }
+  ]
+}

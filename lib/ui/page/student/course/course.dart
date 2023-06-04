@@ -32,7 +32,7 @@ class _CoursePageState extends State<CoursePage>
 
     try {
       final dio = await AppNetwork.getDio();
-      final response = await dio.get('/courses');
+      final response = await dio.get('/course/selectable');
       final CourseResponse = CoursesResponse.fromJson(response.data);
 
       setState(() {
@@ -52,7 +52,7 @@ class _CoursePageState extends State<CoursePage>
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('课程信息管理'),
+        title: const Text('选课'),
         actions: [
           if (_selectedCourses.isNotEmpty)
             IconButton(
@@ -122,17 +122,12 @@ class _CoursePageState extends State<CoursePage>
               ),
             ),
       floatingActionButton: _selectedCourses.isEmpty
-          ? FloatingActionButton(
-              onPressed: () {
-                _showEditDialog();
-              },
-              child: Icon(Icons.add),
-            )
+          ? null
           : FloatingActionButton(
               onPressed: () {
-                _showDeleteDialog();
+                _showSelectAllDialog();
               },
-              child: Icon(Icons.delete),
+              child: Icon(Icons.done),
             ),
     );
   }
@@ -421,13 +416,13 @@ class _CoursePageState extends State<CoursePage>
     );
   }
 
-  Future<void> _showDeleteDialog() async {
+  Future<void> _showSelectAllDialog() async {
     await showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('批量删除课程信息'),
-          content: Text('确定要删除选中的课程吗？'),
+          title: Text('批量选课'),
+          content: Text('确定要选择这些课程吗？'),
           actions: [
             TextButton(
               onPressed: () {
@@ -443,7 +438,6 @@ class _CoursePageState extends State<CoursePage>
                     await dio
                         .delete('/course', queryParameters: {"id": course.id});
                   }
-
                   setState(() {
                     _Courses.removeWhere(
                         (Course) => _selectedCourses.contains(Course));

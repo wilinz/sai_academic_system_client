@@ -54,7 +54,7 @@ class AppNetwork {
     if (kDebugMode) {
       dio.interceptors.add(PrettyDioLogger(
           requestHeader: true,
-          requestBody: false,
+          requestBody: true,
           responseBody: true,
           responseHeader: false,
           error: true,

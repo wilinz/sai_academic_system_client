@@ -114,6 +114,12 @@ class _StudentPageState extends State<StudentPage>
                               student.studentNo +
                               " | " +
                               student.majors),
+                          trailing: Text(
+                              student.username.isEmpty ? "未注册" : "已注册",
+                              style: TextStyle(
+                                  color: !student.username.isEmpty
+                                      ? Colors.green
+                                      : Colors.red)),
                         ),
                       ),
                     ),
@@ -132,7 +138,7 @@ class _StudentPageState extends State<StudentPage>
               onPressed: () {
                 _showDeleteDialog();
               },
-              child: Icon(Icons.delete),
+              child: Icon(Icons.delete_outline),
             ),
     );
   }
@@ -149,6 +155,7 @@ class _StudentPageState extends State<StudentPage>
 
   Future<void> _showEditDialog({Student? student, int? index}) async {
     final nameController = TextEditingController(text: student?.name);
+    final usernameController = TextEditingController(text: student?.username);
     final studentNoController = TextEditingController(text: student?.studentNo);
     final gradeController =
         TextEditingController(text: student?.grade.toString());
@@ -185,6 +192,18 @@ class _StudentPageState extends State<StudentPage>
                         return null;
                       },
                     ),
+                    if (student != null) SizedBox(height: 8),
+                    if (student != null)
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: "登录用户名",
+                          hintText: "登录用户名",
+                          border: const OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8))),
+                        ),
+                        controller: usernameController,
+                      ),
                     SizedBox(height: 8),
                     TextFormField(
                       decoration: InputDecoration(
@@ -298,6 +317,7 @@ class _StudentPageState extends State<StudentPage>
                   final newStudent0 = Student(
                     id: student?.id ?? 0,
                     name: nameController.text,
+                    username: usernameController.text,
                     studentNo: studentNoController.text,
                     grade: int.tryParse(gradeController.text) ?? 0,
                     majors: majorsController.text,
@@ -308,7 +328,9 @@ class _StudentPageState extends State<StudentPage>
                     final response = student == null
                         ? await dio.post('/student', data: newStudent0.toJson())
                         : await dio.put('/student', data: newStudent0.toJson());
-                    final newStudent = student == null ? Student.fromJson(response.data['data']) : newStudent0;
+                    final newStudent = student == null
+                        ? Student.fromJson(response.data['data'])
+                        : newStudent0;
 
                     setState(() {
                       student == null

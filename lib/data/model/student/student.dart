@@ -6,6 +6,7 @@ part 'student.g.dart';
 class Student {
   Student(
       {required this.id,
+      required this.username,
       required this.majors,
       required this.grade,
       required this.studentNo,
@@ -13,6 +14,8 @@ class Student {
 
   @JsonKey(name: "id", defaultValue: 0)
   int id;
+  @JsonKey(name: "username", defaultValue: "")
+  String username;
   @JsonKey(name: "majors", defaultValue: "")
   String majors;
   @JsonKey(name: "grade", defaultValue: 0)
@@ -22,9 +25,8 @@ class Student {
   @JsonKey(name: "name", defaultValue: "")
   String name;
 
-  factory Student.fromJson(Map<String, dynamic> json) => _$StudentFromJson(json);
+  factory Student.fromJson(Map<String, dynamic> json) =>
+      _$StudentFromJson(json);
 
   Map<String, dynamic> toJson() => _$StudentToJson(this);
 }
-
-

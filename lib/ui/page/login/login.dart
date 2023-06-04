@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -139,7 +140,22 @@ class _LoginPageState extends State<_LoginPage> {
                                     : Text("登录"),
                               );
                             },
-                          )
+                          ),
+                          SizedBox(height: 12),
+                          Row(children: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, AppRoute.registerPage,
+                                      arguments: {
+                                        "username": _usernameController.text,
+                                        "password": _passwordController.text
+                                      });
+                                },
+                                child: Text("注册")),
+                            Expanded(child: SizedBox()),
+                            TextButton(onPressed: () {}, child: Text("忘记密码"))
+                          ])
                         ],
                       ),
                     )),
@@ -192,7 +208,9 @@ class _LoginPageState extends State<_LoginPage> {
         final isAdmin = loginResult.data?.isAdmin == true;
         if (isAdmin) {
           Navigator.pushNamed(context, AppRoute.adminHomePage);
-        } else {}
+        } else {
+          Navigator.pushNamed(context, AppRoute.studentHomePage);
+        }
       } else {
         showSnackBar(context, "登录失败: ${loginResult.msg}");
       }
