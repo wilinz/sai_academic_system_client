@@ -13,7 +13,8 @@ class CourseInfoPage extends StatefulWidget {
   _CourseInfoPageState createState() => _CourseInfoPageState();
 }
 
-class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAliveClientMixin {
+class _CourseInfoPageState extends State<CourseInfoPage>
+    with AutomaticKeepAliveClientMixin {
   List<AdminSelectQuery> selectedCourses = [];
 
   @override
@@ -22,29 +23,15 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
   TextEditingController _courseNameController = TextEditingController();
   TextEditingController _studentNameController = TextEditingController();
 
-  void _getSelectedCourses() async {
-    try {
-      final dio = await AppNetwork.getDio();
-      final response = await dio.get('/course/selected/admin');
-
-      if (response.statusCode == 200) {
-        final data = response.data;
-        setState(() {
-          selectedCourses = AdminSelectQueryResponse.fromJson(data).data;
-        });
-      } else {
-        throw Exception('Failed to load selected courses');
-      }
-    } catch (e) {
-      throw Exception('Failed to load selected courses: $e');
-    }
-  }
-
-  void _getCourseSelectionByCourseName(String courseName) async {
+  void _getSelectedCourses(
+      {String courseName = '', String studentName = ''}) async {
     try {
       final dio = await AppNetwork.getDio();
       final response = await dio.get('/course/selected/admin',
-          queryParameters: {'course_name': courseName});
+          queryParameters: {
+            'course_name': courseName,
+            'student_name': studentName
+          });
 
       if (response.statusCode == 200) {
         final data = response.data;
@@ -56,27 +43,6 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
       }
     } catch (e) {
       throw Exception('Failed to load course selection: $e');
-    }
-  }
-
-  void _getCourseSelectionByStudentName(String studentName) async {
-    try {
-      final dio = await AppNetwork.getDio();
-      final response = await dio.get(
-        '/course/selected/admin',
-        queryParameters: {'student_name': studentName},
-      );
-
-      if (response.statusCode == 200) {
-        final data = response.data;
-        setState(() {
-          selectedCourses = AdminSelectQueryResponse.fromJson(data).data;
-        });
-      } else {
-        throw Exception('Failed to load course selection');
-      }
-    } catch (e) {
-      throw Exception('Failed to load course selection: ${e.toString()}');
     }
   }
 
@@ -117,13 +83,6 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
               },
             ),
             SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                _getCourseSelectionByCourseName(_courseNameController.text);
-              },
-              child: Text('按课程名称搜索'),
-            ),
-            SizedBox(height: 32),
             TextFormField(
               decoration: InputDecoration(
                 labelText: "学生姓名",
@@ -141,13 +100,16 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
               },
             ),
             SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                _getCourseSelectionByStudentName(_studentNameController.text);
-              },
-              child: Text('按学生姓名搜索'),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  _getSelectedCourses(courseName:_courseNameController.text,studentName:_studentNameController.text);
+                },
+                child: Text('搜索'),
+              ),
             ),
-            SizedBox(height: 32),
+            SizedBox(height: 16),
             Expanded(
               child: selectedCourses.isEmpty
                   ? EmptyDataPlaceholder(() async {})
