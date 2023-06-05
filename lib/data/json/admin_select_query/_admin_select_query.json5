@@ -1,0 +1,106 @@
+{
+  "code": 200,
+  "msg": "ok",
+  "data": [
+    {
+      "course": {
+        "id": 14,
+        "course_name": "",
+        "course_no": "",
+        "credits": 0,
+        "teacher": "",
+        "grade": 2022,
+        "room": "",
+        "capacity": 0,
+        "selected": 0,
+        "created_at": 1685885846000,
+        "updated_at": 1685979098000
+      },
+      "student": {
+        "id": 0,
+        "majors": "人工智能",
+        "grade": 0,
+        "student_no": "2201630302",
+        "name": "胡悦",
+        "username": "1262001098@qq.com",
+        "created_at": 1685979098000,
+        "updated_at": 1685979098000
+      }
+    },
+    {
+      "course": {
+        "id": 13,
+        "course_name": "",
+        "course_no": "",
+        "credits": 0,
+        "teacher": "",
+        "grade": 2022,
+        "room": "",
+        "capacity": 0,
+        "selected": 0,
+        "created_at": 1685885725000,
+        "updated_at": 1685979254000
+      },
+      "student": {
+        "id": 0,
+        "majors": "人工智能",
+        "grade": 0,
+        "student_no": "2201630305",
+        "name": "韦高雨",
+        "username": "3457929228@qq.com",
+        "created_at": null,
+        "updated_at": null
+      }
+    },
+    {
+      "course": {
+        "id": 5,
+        "course_name": "",
+        "course_no": "",
+        "credits": 0,
+        "teacher": "",
+        "grade": 2022,
+        "room": "",
+        "capacity": 0,
+        "selected": 0,
+        "created_at": 1685864102000,
+        "updated_at": 1685864386000
+      },
+      "student": {
+        "id": 0,
+        "majors": "人工智能",
+        "grade": 0,
+        "student_no": "2201630307",
+        "name": "陈文铧",
+        "username": "3397733901@qq.com",
+        "created_at": null,
+        "updated_at": null
+      }
+    },
+    {
+      "course": {
+        "id": 5,
+        "course_name": "",
+        "course_no": "",
+        "credits": 0,
+        "teacher": "",
+        "grade": 2022,
+        "room": "",
+        "capacity": 0,
+        "selected": 0,
+        "created_at": 1685864102000,
+        "updated_at": 1685864386000
+      },
+      "student": {
+        "id": 0,
+        "majors": "人工智能",
+        "grade": 0,
+        "student_no": "2201630307",
+        "name": "陈文铧",
+        "username": "3397733901@qq.com",
+        "created_at": null,
+        "updated_at": null
+      }
+    }
+  ]
+}

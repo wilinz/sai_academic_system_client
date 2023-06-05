@@ -1,19 +1,23 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_template/data/model/admin_select_query/admin_select_query.dart';
 import 'dart:convert';
 
 import 'package:flutter_template/data/network.dart';
+import 'package:flutter_template/ui/widget/empty_page_placeholder.dart';
 
 class CourseInfoPage extends StatefulWidget {
-
   CourseInfoPage();
 
   @override
   _CourseInfoPageState createState() => _CourseInfoPageState();
 }
 
-class _CourseInfoPageState extends State<CourseInfoPage> {
-  List<Map<String, dynamic>> selectedCourses = [];
+class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAliveClientMixin {
+  List<AdminSelectQuery> selectedCourses = [];
+
+  @override
+  bool get wantKeepAlive => true;
 
   TextEditingController _courseNameController = TextEditingController();
   TextEditingController _studentNameController = TextEditingController();
@@ -21,12 +25,12 @@ class _CourseInfoPageState extends State<CourseInfoPage> {
   void _getSelectedCourses() async {
     try {
       final dio = await AppNetwork.getDio();
-      final response = await dio.get('http://yourbackendserver.com/api/selected_courses', queryParameters: {});
+      final response = await dio.get('/course/selected/admin');
 
       if (response.statusCode == 200) {
         final data = response.data;
         setState(() {
-          selectedCourses = List<Map<String, dynamic>>.from(data);
+          selectedCourses = AdminSelectQueryResponse.fromJson(data).data;
         });
       } else {
         throw Exception('Failed to load selected courses');
@@ -39,12 +43,13 @@ class _CourseInfoPageState extends State<CourseInfoPage> {
   void _getCourseSelectionByCourseName(String courseName) async {
     try {
       final dio = await AppNetwork.getDio();
-      final response = await dio.get('http://yourbackendserver.com/api/course_selection', queryParameters: {'courseName': courseName});
+      final response = await dio.get('/course/selected/admin',
+          queryParameters: {'course_name': courseName});
 
       if (response.statusCode == 200) {
         final data = response.data;
         setState(() {
-          selectedCourses = List<Map<String, dynamic>>.from(data);
+          selectedCourses = AdminSelectQueryResponse.fromJson(data).data;
         });
       } else {
         throw Exception('Failed to load course selection');
@@ -58,17 +63,14 @@ class _CourseInfoPageState extends State<CourseInfoPage> {
     try {
       final dio = await AppNetwork.getDio();
       final response = await dio.get(
-        'http://yourbackendserver.com/api/course_selection',
-        queryParameters: {'studentName': studentName},
-        options: Options(
-          headers: {'Content-Type': 'application/json'},
-        ),
+        '/course/selected/admin',
+        queryParameters: {'student_name': studentName},
       );
 
       if (response.statusCode == 200) {
         final data = response.data;
         setState(() {
-          selectedCourses = List<Map<String, dynamic>>.from(data);
+          selectedCourses = AdminSelectQueryResponse.fromJson(data).data;
         });
       } else {
         throw Exception('Failed to load course selection');
@@ -148,23 +150,25 @@ class _CourseInfoPageState extends State<CourseInfoPage> {
             SizedBox(height: 32),
             Expanded(
               child: selectedCourses.isEmpty
-                  ? Center(child: CircularProgressIndicator())
+                  ? EmptyDataPlaceholder(() async {})
                   : ListView.builder(
-                itemCount: selectedCourses.length,
-                itemBuilder: (context, index) {
-                  final course = selectedCourses[index];
-                  return ListTile(
-                    title: Text(
-                      course['courseName'],
-                      style: TextStyle(fontSize: isDesktop ? 18 : 14),
+                      itemCount: selectedCourses.length,
+                      itemBuilder: (context, index) {
+                        final course = selectedCourses[index];
+                        return ListTile(
+                          title: Text(
+                            course.course.courseName +
+                                "  " +
+                                course.student.name,
+                            style: TextStyle(fontSize: isDesktop ? 18 : 14),
+                          ),
+                          subtitle: Text(
+                            '教师: ${course.course.teacher}, 年级: ${course.course.grade}',
+                            style: TextStyle(fontSize: isDesktop ? 16 : 12),
+                          ),
+                        );
+                      },
                     ),
-                    subtitle: Text(
-                      'Teacher: ${course['teacherName']}, Grade: ${course['grade']}',
-                      style: TextStyle(fontSize: isDesktop ? 16 : 12),
-                    ),
-                  );
-                },
-              ),
             ),
           ],
         ),
