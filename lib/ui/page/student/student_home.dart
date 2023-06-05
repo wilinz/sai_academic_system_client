@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'course/course.dart';
+import 'course/course_select.dart';
+import 'course/selected_course.dart';
+
 
 
 class StudentHomePage extends StatefulWidget {
@@ -17,8 +19,8 @@ class _StudentHomePageState extends State<StudentHomePage> {
     return Scaffold(
       body: PageView(
         children: [
-          CoursePage(),
-          SelectedListPage(),
+          CourseSelectPage(),
+          SelectedCoursePage(),
         ],
         onPageChanged: (index) {
           setState(() {

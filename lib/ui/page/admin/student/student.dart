@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_template/data/model/student/student_response.dart';
 import 'package:flutter_template/data/network.dart';
+import 'package:flutter_template/ui/widget/empty_page_placeholder.dart';
 import 'package:flutter_template/util/platform.dart';
 
 import '../../../../data/model/student/student.dart';
@@ -78,55 +79,57 @@ class _StudentPageState extends State<StudentPage>
             ),
         ],
       ),
-      body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : RefreshIndicator(
-              onRefresh: _fetchStudents,
-              child: ListView.builder(
-                padding: const EdgeInsets.all(4.0),
-                itemCount: _students.length,
-                itemBuilder: (context, index) {
-                  final student = _students[index];
-                  return Padding(
+      body: _students.isEmpty
+          ? EmptyDataPlaceholder(_fetchStudents)
+          : _isLoading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : RefreshIndicator(
+                  onRefresh: _fetchStudents,
+                  child: ListView.builder(
                     padding: const EdgeInsets.all(4.0),
-                    child: Card(
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(12),
-                        onTap: () {
-                          if (_selectedStudents.isNotEmpty) {
-                            _selectStudent(student);
-                          } else {
-                            _showEditDialog(student: student, index: index);
-                          }
-                        },
-                        onLongPress: () {
-                          _selectStudent(student);
-                        },
-                        child: ListTile(
-                          leading: _selectedStudents.contains(student)
-                              ? Icon(Icons.check_circle)
-                              : null,
-                          title: Text(student.name),
-                          subtitle: Text(student.grade.toString() +
-                              " | " +
-                              student.studentNo +
-                              " | " +
-                              student.majors),
-                          trailing: Text(
-                              student.username.isEmpty ? "未注册" : "已注册",
-                              style: TextStyle(
-                                  color: !student.username.isEmpty
-                                      ? Colors.green
-                                      : Colors.red)),
+                    itemCount: _students.length,
+                    itemBuilder: (context, index) {
+                      final student = _students[index];
+                      return Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Card(
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(12),
+                            onTap: () {
+                              if (_selectedStudents.isNotEmpty) {
+                                _selectStudent(student);
+                              } else {
+                                _showEditDialog(student: student, index: index);
+                              }
+                            },
+                            onLongPress: () {
+                              _selectStudent(student);
+                            },
+                            child: ListTile(
+                              leading: _selectedStudents.contains(student)
+                                  ? Icon(Icons.check_circle)
+                                  : null,
+                              title: Text(student.name),
+                              subtitle: Text(student.grade.toString() +
+                                  " | " +
+                                  student.studentNo +
+                                  " | " +
+                                  student.majors),
+                              trailing: Text(
+                                  student.username.isEmpty ? "未注册" : "已注册",
+                                  style: TextStyle(
+                                      color: !student.username.isEmpty
+                                          ? Colors.green
+                                          : Colors.red)),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+                      );
+                    },
+                  ),
+                ),
       floatingActionButton: _selectedStudents.isEmpty
           ? FloatingActionButton(
               onPressed: () {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_template/data/model/course/course.dart';
 import 'package:flutter_template/data/network.dart';
+import 'package:flutter_template/ui/widget/empty_page_placeholder.dart';
 import 'package:flutter_template/util/platform.dart';
 
 import '../../../../data/model/course/courses_response.dart';
@@ -12,7 +13,7 @@ class CoursePage extends StatefulWidget {
 
 class _CoursePageState extends State<CoursePage>
     with AutomaticKeepAliveClientMixin {
-  List<Course> _Courses = [];
+  List<Course> _courses = [];
   bool _isLoading = false;
   List<Course> _selectedCourses = [];
 
@@ -36,7 +37,7 @@ class _CoursePageState extends State<CoursePage>
       final CourseResponse = CoursesResponse.fromJson(response.data);
 
       setState(() {
-        _Courses = CourseResponse.data;
+        _courses = CourseResponse.data;
         _isLoading = false;
       });
     } catch (e) {
@@ -59,10 +60,10 @@ class _CoursePageState extends State<CoursePage>
               icon: const Icon(Icons.select_all),
               onPressed: () {
                 setState(() {
-                  if (_selectedCourses.length == _Courses.length) {
+                  if (_selectedCourses.length == _courses.length) {
                     _selectedCourses.clear();
                   } else {
-                    _selectedCourses = List<Course>.from(_Courses);
+                    _selectedCourses = List<Course>.from(_courses);
                   }
                 });
               },
@@ -78,49 +79,51 @@ class _CoursePageState extends State<CoursePage>
             ),
         ],
       ),
-      body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : RefreshIndicator(
-              onRefresh: _fetchCourses,
-              child: ListView.builder(
-                padding: const EdgeInsets.all(4.0),
-                itemCount: _Courses.length,
-                itemBuilder: (context, index) {
-                  final Course = _Courses[index];
-                  return Padding(
+      body: _courses.isEmpty
+          ? EmptyDataPlaceholder(_fetchCourses)
+          : _isLoading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : RefreshIndicator(
+                  onRefresh: _fetchCourses,
+                  child: ListView.builder(
                     padding: const EdgeInsets.all(4.0),
-                    child: Card(
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(12),
-                        onTap: () {
-                          if (_selectedCourses.isNotEmpty) {
-                            _selectCourse(Course);
-                          } else {
-                            _showEditDialog(course: Course, index: index);
-                          }
-                        },
-                        onLongPress: () {
-                          _selectCourse(Course);
-                        },
-                        child: ListTile(
-                          leading: _selectedCourses.contains(Course)
-                              ? Icon(Icons.check_circle)
-                              : null,
-                          title: Text(Course.courseName),
-                          subtitle: Text(Course.grade.toString() +
-                              " | " +
-                              Course.courseNo +
-                              " | " +
-                              Course.teacher),
+                    itemCount: _courses.length,
+                    itemBuilder: (context, index) {
+                      final Course = _courses[index];
+                      return Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Card(
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(12),
+                            onTap: () {
+                              if (_selectedCourses.isNotEmpty) {
+                                _selectCourse(Course);
+                              } else {
+                                _showEditDialog(course: Course, index: index);
+                              }
+                            },
+                            onLongPress: () {
+                              _selectCourse(Course);
+                            },
+                            child: ListTile(
+                              leading: _selectedCourses.contains(Course)
+                                  ? Icon(Icons.check_circle)
+                                  : null,
+                              title: Text(Course.courseName),
+                              subtitle: Text(Course.grade.toString() +
+                                  " | " +
+                                  Course.courseNo +
+                                  " | " +
+                                  Course.teacher),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+                      );
+                    },
+                  ),
+                ),
       floatingActionButton: _selectedCourses.isEmpty
           ? FloatingActionButton(
               onPressed: () {
@@ -319,7 +322,8 @@ class _CoursePageState extends State<CoursePage>
                           return null;
                         },
                       ),
-
+                      // if (course != null) SizedBox(height: 16),
+                      // if (course != null) Text("已选人数：${course.selected}")
                     ],
                   ),
                 ),
@@ -362,7 +366,7 @@ class _CoursePageState extends State<CoursePage>
                           queryParameters: {"id": course.id});
 
                       setState(() {
-                        _Courses.remove(course);
+                        _courses.remove(course);
                       });
                       Navigator.pop(context); // Close the confirmation dialog
                     } catch (e) {
@@ -404,8 +408,8 @@ class _CoursePageState extends State<CoursePage>
 
                     setState(() {
                       course == null
-                          ? _Courses.add(newCourse)
-                          : _Courses[index!] = newCourse;
+                          ? _courses.add(newCourse)
+                          : _courses[index!] = newCourse;
                     });
                     Navigator.pop(context);
                   } catch (e) {
@@ -445,7 +449,7 @@ class _CoursePageState extends State<CoursePage>
                   }
 
                   setState(() {
-                    _Courses.removeWhere(
+                    _courses.removeWhere(
                         (Course) => _selectedCourses.contains(Course));
                     _selectedCourses.clear();
                   });

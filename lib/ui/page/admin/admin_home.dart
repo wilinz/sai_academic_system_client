@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/ui/page/admin/info/info.dart';
 import 'package:flutter_template/ui/page/admin/student/student.dart';
 
 import 'course/course.dart';
@@ -19,7 +20,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
         children: [
           StudentPage(),
           CoursePage(),
-          StudentCourseSelectionPage(),
+          CourseInfoPage(),
         ],
         onPageChanged: (index) {
           setState(() {

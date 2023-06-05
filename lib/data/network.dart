@@ -24,7 +24,7 @@ extension DioExt on Dio {
 }
 
 class AppNetwork {
-  static const String baseUrl = "http://192.168.1.5:10011";
+  static const String baseUrl = "https://hk.wilinz.com:3001";
   static const String typeUrlEncode = "application/x-www-form-urlencoded";
   static const String userAgent =
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36";
